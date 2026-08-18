@@ -1,0 +1,56 @@
+{
+  "series": {
+    "title": "40 Days · Eucharistic Deliverance Prayer",
+    "subtitle": "Fr Daniel Poovannathil",
+    "priest": "Fr Daniel Poovannathil",
+    "totalDays": 40
+  },
+  "days": [
+    {
+      "day": 1,
+      "emoji": "🙏",
+      "theme": {
+        "en": "Begin Your Journey",
+        "ml": "നിങ്ങളുടെ യാത്ര ആരംഭിക്കുക"
+      },
+      "scripture": {
+        "en": "Matthew 4:4",
+        "ml": "മത്തായി 4:4"
+      },
+      "summary": {
+        "en": "The beginning of a transformative 40-day spiritual journey with the Eucharist.",
+        "ml": "വിശുദ്ധ കുർബാനയോടൊപ്പം 40 ദിവസത്തെ ആത്മീയ യാത്രയുടെ ആരംഭം."
+      },
+      "virtue": {
+        "title": "Faith",
+        "description": "Belief in God's guidance"
+      },
+      "evil": {
+        "title": "Doubt"
+      }
+    },
+    {
+      "day": 2,
+      "emoji": "✨",
+      "theme": {
+        "en": "Seek Divine Guidance",
+        "ml": "ദൈവിക നിർദേശം തേടുക"
+      },
+      "scripture": {
+        "en": "Proverbs 3:5-6",
+        "ml": "സദൃശ്യങ്ങൾ 3:5-6"
+      },
+      "summary": {
+        "en": "Trust in the Lord with all your heart and He will guide your paths.",
+        "ml": "നിങ്ങളുടെ ഹൃദയം മുഴുവനോടെ കർത്താവിൽ വിശ്വാസം വയ്ക്കുക."
+      },
+      "virtue": {
+        "title": "Trust",
+        "description": "Complete faith in God's plan"
+      },
+      "evil": {
+        "title": "Distrust"
+      }
+    }
+  ]
+}
