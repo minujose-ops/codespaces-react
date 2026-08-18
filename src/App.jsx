@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 
-// Primary source: Google Doc export (plain text). If unavailable, falls back to existing JSON.
-const DOC_EXPORT_URL = 'https://docs.google.com/document/d/1aDaeLKFR5cp-h3Pi6GguRK62sKEJyT2SV2d_sLr5GtY/export?format=txt';
+// Primary fallback JSON if parsing from the repo markdown fails.
 const FALLBACK_JSON = 'https://jaicyjoy.github.io/40-days/data/days.json';
 
 // The markdown file added to the repo contains bilingual content. We'll fetch it and create
@@ -99,41 +98,14 @@ function App() {
   const [fullTextMl, setFullTextMl] = useState('');
 
   useEffect(() => {
-    // Try fetching the Google Doc text export first
-    fetch(DOC_EXPORT_URL)
-      .then((r) => {
-        if (!r.ok) throw new Error('doc not available');
-        return r.text();
-      })
-      .then((text) => {
-        const parsed = parseDocTextToContent(text);
-        if (parsed) {
-          setContent(parsed);
-          setSelectedDay(parsed.days[0]?.day || 1);
-        } else {
-          // fallback to JSON
-          throw new Error('parsing failed');
-        }
-      })
-      .catch(() => {
-        // Fetch fallback JSON
-        setLoadingMsg('Falling back to the packaged JSON guide...');
-        fetch(FALLBACK_JSON)
-          .then((r) => {
-            if (!r.ok) throw new Error('Unable to load fallback JSON');
-            return r.json();
-          })
-          .then((json) => setContent(json))
-          .catch(() => setContent({ error: true }));
-      });
-
-    // Fetch the repo markdown file raw content to show full bilingual text split into two tabs.
+    // Fetch the repo markdown file raw content and use it as primary source.
     fetch(RAW_MD_URL)
       .then((r) => {
         if (!r.ok) throw new Error('md not available');
         return r.text();
       })
       .then((md) => {
+        // Build full-text panels
         const lines = md.split(/\r?\n/);
         const isMalayalam = (s) => /[\u0D00-\u0D7F]/.test(s);
         const enLines = [];
@@ -151,9 +123,34 @@ function App() {
         }
         setFullTextEn(enLines.join('\n'));
         setFullTextMl(mlLines.join('\n'));
+
+        // Try to parse the markdown into days; if parsing fails, fallback to JSON
+        const parsed = parseDocTextToContent(md);
+        if (parsed) {
+          setContent(parsed);
+          setSelectedDay(parsed.days[0]?.day || 1);
+        } else {
+          // fallback to packaged JSON
+          setLoadingMsg('Falling back to the packaged JSON guide...');
+          fetch(FALLBACK_JSON)
+            .then((r) => {
+              if (!r.ok) throw new Error('Unable to load fallback JSON');
+              return r.json();
+            })
+            .then((json) => setContent(json))
+            .catch(() => setContent({ error: true }));
+        }
       })
       .catch(() => {
-        // ignore; full text panels will remain empty
+        // If the repo markdown isn't available, fallback to JSON
+        setLoadingMsg('Falling back to the packaged JSON guide...');
+        fetch(FALLBACK_JSON)
+          .then((r) => {
+            if (!r.ok) throw new Error('Unable to load fallback JSON');
+            return r.json();
+          })
+          .then((json) => setContent(json))
+          .catch(() => setContent({ error: true }));
       });
   }, []);
 
