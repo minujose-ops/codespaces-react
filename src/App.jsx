@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 
-// Primary fallback JSON if parsing from the repo markdown fails.
-const FALLBACK_JSON = 'https://jaicyjoy.github.io/40-days/data/days.json';
+// Primary fallback JSON - use local public folder first
+const FALLBACK_JSON = '/codespaces-react/days.json';
+
+// Secondary fallback if local isn't available
+const SECONDARY_FALLBACK = 'https://jaicyjoy.github.io/40-days/data/days.json';
 
 // The markdown file added to the repo contains bilingual content. We'll fetch it and create
 // two filtered views: Malayalam-only and English-only (simple heuristics by character ranges).
-const REPO_MD_PATH = 'വിശുദ്ധ കുർബാനയോടൊപ്പം 40 ദിനങ്ങൾ.md';
+const REPO_MD_PATH = 'വിശുദ്ധ കുർബാനയോടൊപ്പം 40 ദിനങ്ങൾ.md';
 const RAW_MD_URL = `https://raw.githubusercontent.com/minujose-ops/codespaces-react/main/${encodeURIComponent(REPO_MD_PATH)}`;
 
 function parseDocTextToContent(text) {
@@ -130,27 +133,45 @@ function App() {
           setContent(parsed);
           setSelectedDay(parsed.days[0]?.day || 1);
         } else {
-          // fallback to packaged JSON
+          // fallback to local JSON first
           setLoadingMsg('Falling back to the packaged JSON guide...');
           fetch(FALLBACK_JSON)
             .then((r) => {
-              if (!r.ok) throw new Error('Unable to load fallback JSON');
+              if (!r.ok) throw new Error('Unable to load local JSON');
               return r.json();
             })
             .then((json) => setContent(json))
-            .catch(() => setContent({ error: true }));
+            .catch(() => {
+              // If local JSON fails, try secondary fallback
+              fetch(SECONDARY_FALLBACK)
+                .then((r) => {
+                  if (!r.ok) throw new Error('Unable to load secondary JSON');
+                  return r.json();
+                })
+                .then((json) => setContent(json))
+                .catch(() => setContent({ error: true }));
+            });
         }
       })
       .catch(() => {
-        // If the repo markdown isn't available, fallback to JSON
+        // If the repo markdown isn't available, fallback to local JSON first
         setLoadingMsg('Falling back to the packaged JSON guide...');
         fetch(FALLBACK_JSON)
           .then((r) => {
-            if (!r.ok) throw new Error('Unable to load fallback JSON');
+            if (!r.ok) throw new Error('Unable to load local JSON');
             return r.json();
           })
           .then((json) => setContent(json))
-          .catch(() => setContent({ error: true }));
+          .catch(() => {
+            // If local JSON fails, try secondary fallback
+            fetch(SECONDARY_FALLBACK)
+              .then((r) => {
+                if (!r.ok) throw new Error('Unable to load secondary JSON');
+                return r.json();
+              })
+              .then((json) => setContent(json))
+              .catch(() => setContent({ error: true }));
+          });
       });
   }, []);
 
