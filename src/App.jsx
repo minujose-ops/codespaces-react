@@ -5,6 +5,11 @@ import './App.css';
 const DOC_EXPORT_URL = 'https://docs.google.com/document/d/1aDaeLKFR5cp-h3Pi6GguRK62sKEJyT2SV2d_sLr5GtY/export?format=txt';
 const FALLBACK_JSON = 'https://jaicyjoy.github.io/40-days/data/days.json';
 
+// The markdown file added to the repo contains bilingual content. We'll fetch it and create
+// two filtered views: Malayalam-only and English-only (simple heuristics by character ranges).
+const REPO_MD_PATH = 'വിശുദ്ധ കുർബാനയോടൊപ്പം 40 ദിനങ്ങൾ.md';
+const RAW_MD_URL = `https://raw.githubusercontent.com/minujose-ops/codespaces-react/main/${encodeURIComponent(REPO_MD_PATH)}`;
+
 function parseDocTextToContent(text) {
   // Try to split the export by "Day <n>" markers. This is heuristic and depends on doc structure.
   const dayRegex = /Day\s*(\d+)\b[\s\S]*?(?=(?:\nDay\s*\d+\b)|$)/gi;
@@ -89,6 +94,10 @@ function App() {
   const [lang, setLang] = useState('en');
   const [loadingMsg, setLoadingMsg] = useState('Loading the 40-day journey...');
 
+  // Full-file text views (filtered)
+  const [fullTextEn, setFullTextEn] = useState('');
+  const [fullTextMl, setFullTextMl] = useState('');
+
   useEffect(() => {
     // Try fetching the Google Doc text export first
     fetch(DOC_EXPORT_URL)
@@ -116,6 +125,35 @@ function App() {
           })
           .then((json) => setContent(json))
           .catch(() => setContent({ error: true }));
+      });
+
+    // Fetch the repo markdown file raw content to show full bilingual text split into two tabs.
+    fetch(RAW_MD_URL)
+      .then((r) => {
+        if (!r.ok) throw new Error('md not available');
+        return r.text();
+      })
+      .then((md) => {
+        const lines = md.split(/\r?\n/);
+        const isMalayalam = (s) => /[\u0D00-\u0D7F]/.test(s);
+        const enLines = [];
+        const mlLines = [];
+        for (const line of lines) {
+          if (isMalayalam(line)) {
+            mlLines.push(line);
+          } else if (/[A-Za-z0-9]/.test(line)) {
+            enLines.push(line);
+          } else {
+            // neutral lines (empty or punctuation) - push to both so spacing remains
+            mlLines.push(line);
+            enLines.push(line);
+          }
+        }
+        setFullTextEn(enLines.join('\n'));
+        setFullTextMl(mlLines.join('\n'));
+      })
+      .catch(() => {
+        // ignore; full text panels will remain empty
       });
   }, []);
 
@@ -186,6 +224,42 @@ function App() {
                 <span className="tile-arrow" aria-hidden="true">↗</span>
               </button>
             ))}
+          </div>
+
+          {/* Full-text tabs: show the entire repo markdown split by language. */}
+          <div className="full-text-section">
+            <div className="full-text-heading">
+              <p className="eyebrow">Full text</p>
+              <h3>Complete content</h3>
+            </div>
+            <div className="full-text-tabs" role="tablist" aria-label="Full text language tabs">
+              <button
+                type="button"
+                role="tab"
+                aria-selected={lang === 'ml'}
+                className={"full-tab " + (lang === 'ml' ? 'active' : '')}
+                onClick={() => setLang('ml')}
+              >
+                Malayalam
+              </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={lang === 'en'}
+                className={"full-tab " + (lang === 'en' ? 'active' : '')}
+                onClick={() => setLang('en')}
+              >
+                English
+              </button>
+            </div>
+
+            <div className="full-text-panel">
+              {lang === 'ml' ? (
+                <pre className="full-text" aria-label="Malayalam full text">{fullTextMl || 'Malayalam content not available.'}</pre>
+              ) : (
+                <pre className="full-text" aria-label="English full text">{fullTextEn || 'English content not available.'}</pre>
+              )}
+            </div>
           </div>
         </div>
 
