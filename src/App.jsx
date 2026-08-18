@@ -82,8 +82,9 @@ function parseDocTextToContent(text) {
   return {
     series: {
       title: '40 Days · Eucharistic Deliverance Prayer',
-      subtitle: 'Fr Daniel Poovannathil',
-      priest: 'Fr Daniel Poovannathil',
+      // Replace the priest line in header with the centre name per request; do not duplicate content in header
+      subtitle: 'Mount Carmel Retreat Centre',
+      priest: '',
       totalDays: days.length,
     },
     days,
@@ -130,6 +131,13 @@ function App() {
         // Try to parse the markdown into days; if parsing fails, fallback to JSON
         const parsed = parseDocTextToContent(md);
         if (parsed) {
+          // Ensure Day 1 has the requested theme/title
+          const day1 = parsed.days.find(d => d.day === 1);
+          if (day1) {
+            day1.theme.en = 'Day 1: The Cosmic Temple';
+            // keep Malayalam theme untouched if available
+          }
+
           setContent(parsed);
           setSelectedDay(parsed.days[0]?.day || 1);
         } else {
@@ -181,6 +189,46 @@ function App() {
   const day = content.days.find(({ day: dayNumber }) => dayNumber === selectedDay) || content.days[0];
   const { series } = content;
 
+  const dayTileTitle = (item) => {
+    if (item.day === 1 && lang === 'en') return 'Day 1: The Cosmic Temple';
+    if (item.day === 1 && lang === 'ml') return item.theme && item.theme.ml ? item.theme.ml : 'Day 1: The Cosmic Temple';
+    return (item.theme && item.theme[lang]) || item.title || '';
+  };
+
+  const indexHeading = lang === 'en' ? '40 Days · Eucharistic Deliverance Prayer' : 'വിശുദ്ധ കുർബാനയോടൊപ്പം 40 ദിനങ്ങൾ';
+
+  // Hardcoded Day 1 content (English) as requested. Malayalam tab will show the same structure until translations are provided.
+  const day1ContentEn = {
+    scriptureReadings: [
+      {
+        ref: 'Genesis 1:1-2',
+        text: '"In the beginning when God created the heavens and the earth, the earth was a formless void and darkness covered the face of the deep, while a wind from God swept over the face of the waters."'
+      },
+      {
+        ref: 'Hebrews 4:9-10',
+        text: '"So then, a sabbath rest still remains for the people of God; for those who enter God’s rest also cease from their labours as God did from his."'
+      }
+    ],
+    relatedVerses: [
+      'Genesis 2:2-3 — The account of God finishing His work, resting on the seventh day, and blessing it.'
+    ],
+    virtues: {
+      title: 'Trust in God',
+      description: 'Blindly trust and rely on God in all situations of life.'
+    },
+    vice: 'Self-reliance: Give up the pride and reliance solely on your own abilities and strengths.',
+    practice: 'Choose five small, everyday tasks that you normally think you can do on your own without God\'s help (for example: walking to a place, eating a meal, doing chores, or driving). Consciously ask for God\'s help and pray while doing these five specific tasks today.',
+    prayer: '"Jesus, I trust in You completely."',
+    coreThought: 'God created the earth not just as a dwelling place but like a temple (a Cosmic Temple). After building the universe like a temple in six days, God sat on His throne and rested on the seventh day. We are called to enter into that unending seventh day, which is God\'s rest and His presence. The purpose of a human being\'s creation is fulfilled only when they worship God. Only through worship can one attain a life without complaints.',
+    thingsToDo: [
+      'Begin to live with the realization that you were created primarily to worship God.',
+      'Surrender everything you do relying on your own abilities to the Lord, and start trusting solely in God.',
+      'Consciously ask for God\'s help when doing the 5 small daily routines you chose for today\'s practice.',
+      'Offer your prayers and adoration today as a reparation for the times the Holy Eucharist has been dishonored anywhere in the world (Adoration becomes Reparation).'
+    ],
+    myPrayer: `Lord, I thank You for creating me as Your worshipper. Grant me the grace to enter into Your rest and Your presence, reigning in this great cosmic temple of the universe. Remove from me the reliance on my own abilities, and teach me to depend entirely on You in all things. I ask for forgiveness for all the dishonor shown towards the Holy Eucharist, and for the times I have received Communion unworthily. Give me a heart that praises You constantly, living a life without complaints. Jesus, I trust in You completely. Amen.`
+  };
+
   return (
     <main className="app-shell">
       <header className="site-header">
@@ -188,10 +236,9 @@ function App() {
         <div>
           <p className="eyebrow">{series.title}</p>
           <h1>{series.subtitle}</h1>
-          <p className="byline">By {series.priest}</p>
         </div>
+
         <div className="header-right">
-          <div className="center-name">Mount Carmel Retreat Centre</div>
           <p className="page-count"><strong>{String(day.day).padStart(2, '0')}</strong> / {series.totalDays}</p>
         </div>
       </header>
@@ -201,7 +248,7 @@ function App() {
           <div className="section-heading">
             <div>
               <p className="eyebrow">Index</p>
-              <h2>Choose a day</h2>
+              <h2>{indexHeading}</h2>
             </div>
             <span className="hint">Click any tile to explore</span>
           </div>
@@ -239,7 +286,7 @@ function App() {
                 >
                   <span className="tile-number">{String(item.day).padStart(2, '0')}</span>
                   <span className="tile-emoji" aria-hidden="true">{item.emoji || '🙏'}</span>
-                  <span className="tile-title">{(item.theme && item.theme[lang]) || item.title || ''}</span>
+                  <span className="tile-title">{dayTileTitle(item)}</span>
                   <span className="tile-arrow" aria-hidden="true">↗</span>
                 </button>
               ))
@@ -294,21 +341,66 @@ function App() {
           </div>
           <div className="detail-number">{day.emoji}</div>
           <p className="eyebrow">Day {day.day}</p>
-          <h2>{(day.theme && day.theme[lang]) || day.title || ''}</h2>
-          {day.scripture && (day.scripture[lang] || day.scripture) && (
-            <p className="scripture">{(day.scripture && day.scripture[lang]) || day.scripture}</p>
+          <h2>{(day.theme && (day.theme[lang] || day.theme.en)) || day.title || ''}</h2>
+
+          {/* If Day 1, render the requested detailed structure */}
+          {day.day === 1 ? (
+            <div className="day-detail-body">
+              <section>
+                <h3>Scripture Readings:</h3>
+                {day1ContentEn.scriptureReadings.map((s, i) => (
+                  <p key={i} className="scripture">{s.ref} - {s.text}</p>
+                ))}
+              </section>
+
+              <section>
+                <h3>Related Verses:</h3>
+                <ul>
+                  {day1ContentEn.relatedVerses.map((rv, i) => <li key={i}>{rv}</li>)}
+                </ul>
+              </section>
+
+              <section>
+                <h3>Today's Virtues and Practices</h3>
+                <p><strong>Virtue to Practice |</strong> {day1ContentEn.virtues.title}: {day1ContentEn.virtues.description}</p>
+                <p><strong>Vice to Avoid |</strong> {day1ContentEn.vice}</p>
+                <p><strong>Today's Practice |</strong> {day1ContentEn.practice}</p>
+                <p><strong>Prayer to Repeat |</strong> {day1ContentEn.prayer}</p>
+                <p><strong>Core Thought |</strong> {day1ContentEn.coreThought}</p>
+              </section>
+
+              <section>
+                <h3>Things to Do Today</h3>
+                <ul>
+                  {day1ContentEn.thingsToDo.map((t, i) => <li key={i}>{t}</li>)}
+                </ul>
+              </section>
+
+              <section>
+                <h3>My Prayer for Today</h3>
+                <p>{day1ContentEn.myPrayer}</p>
+              </section>
+            </div>
+          ) : (
+            // Fallback rendering for other days
+            <>
+              {day.scripture && (day.scripture[lang] || day.scripture) && (
+                <p className="scripture">{(day.scripture && day.scripture[lang]) || day.scripture}</p>
+              )}
+              {(day.summary && (day.summary[lang] || day.summary)) && (
+                <p className="detail-copy">{(day.summary && day.summary[lang]) || day.summary}</p>
+              )}
+
+              <div className="detail-footer">
+                {day.virtue && day.virtue.title && (
+                  <span>Virtue: <strong>{day.virtue.title}</strong></span>
+                )}
+                {day.evil && day.evil.title && (
+                  <span className="status-dot">● Avoid: <strong>{day.evil.title}</strong></span>
+                )}
+              </div>
+            </>
           )}
-          {(day.summary && (day.summary[lang] || day.summary)) && (
-            <p className="detail-copy">{(day.summary && day.summary[lang]) || day.summary}</p>
-          )}
-          <div className="detail-footer">
-            {day.virtue && day.virtue.title && (
-              <span>Virtue: <strong>{day.virtue.title}</strong></span>
-            )}
-            {day.evil && day.evil.title && (
-              <span className="status-dot">● Avoid: <strong>{day.evil.title}</strong></span>
-            )}
-          </div>
         </aside>
       </section>
     </main>
