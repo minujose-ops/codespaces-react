@@ -228,67 +228,87 @@ function App() {
           </div>
 
           <div className="tile-grid" aria-label="Page index">
-            {content.days.map((item) => (
-              <button
-                className={`page-tile ${day.day === item.day ? 'is-active' : ''}`}
-                key={item.day}
-                onClick={() => setSelectedDay(item.day)}
-                type="button"
-                aria-pressed={day.day === item.day}
-              >
-                <span className="tile-number">{String(item.day).padStart(2, '0')}</span>
-                <span className="tile-emoji" aria-hidden="true">{item.emoji || '🙏'}</span>
-                <span className="tile-title">{(item.theme && item.theme[lang]) || item.theme || item.title || ''}</span>
-                <span className="tile-arrow" aria-hidden="true">↗</span>
-              </button>
-            ))}
+            {content.days && content.days.length > 0 ? (
+              content.days.map((item) => (
+                <button
+                  className={`page-tile ${day.day === item.day ? 'is-active' : ''}`}
+                  key={item.day}
+                  onClick={() => setSelectedDay(item.day)}
+                  type="button"
+                  aria-pressed={day.day === item.day}
+                >
+                  <span className="tile-number">{String(item.day).padStart(2, '0')}</span>
+                  <span className="tile-emoji" aria-hidden="true">{item.emoji || '🙏'}</span>
+                  <span className="tile-title">{(item.theme && item.theme[lang]) || item.title || ''}</span>
+                  <span className="tile-arrow" aria-hidden="true">↗</span>
+                </button>
+              ))
+            ) : (
+              <p>No days available</p>
+            )}
           </div>
 
           {/* Full-text tabs: show the entire repo markdown split by language. */}
-          <div className="full-text-section">
-            <div className="full-text-heading">
-              <p className="eyebrow">Full text</p>
-              <h3>Complete content</h3>
-            </div>
-            <div className="full-text-tabs" role="tablist" aria-label="Full text language tabs">
-              <button
-                type="button"
-                role="tab"
-                aria-selected={lang === 'ml'}
-                className={"full-tab " + (lang === 'ml' ? 'active' : '')}
-                onClick={() => setLang('ml')}
-              >
-                Malayalam
-              </button>
-              <button
-                type="button"
-                role="tab"
-                aria-selected={lang === 'en'}
-                className={"full-tab " + (lang === 'en' ? 'active' : '')}
-                onClick={() => setLang('en')}
-              >
-                English
-              </button>
-            </div>
+          {(fullTextEn || fullTextMl) && (
+            <div className="full-text-section">
+              <div className="full-text-heading">
+                <p className="eyebrow">Full text</p>
+                <h3>Complete content</h3>
+              </div>
+              <div className="full-text-tabs" role="tablist" aria-label="Full text language tabs">
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={lang === 'ml'}
+                  className={"full-tab " + (lang === 'ml' ? 'active' : '')}
+                  onClick={() => setLang('ml')}
+                >
+                  Malayalam
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={lang === 'en'}
+                  className={"full-tab " + (lang === 'en' ? 'active' : '')}
+                  onClick={() => setLang('en')}
+                >
+                  English
+                </button>
+              </div>
 
-            <div className="full-text-panel">
-              {lang === 'ml' ? (
-                <pre className="full-text" aria-label="Malayalam full text">{fullTextMl || 'Malayalam content not available.'}</pre>
-              ) : (
-                <pre className="full-text" aria-label="English full text">{fullTextEn || 'English content not available.'}</pre>
-              )}
+              <div className="full-text-panel">
+                {lang === 'ml' ? (
+                  <pre className="full-text" aria-label="Malayalam full text">{fullTextMl || 'Malayalam content not available.'}</pre>
+                ) : (
+                  <pre className="full-text" aria-label="English full text">{fullTextEn || 'English content not available.'}</pre>
+                )}
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         <aside className="detail-panel" aria-live="polite">
-          <div className="detail-topline"><span>Selected day</span><span>{String(day.day).padStart(2, '0')}</span></div>
+          <div className="detail-topline">
+            <span>Selected day</span>
+            <span>{String(day.day).padStart(2, '0')}</span>
+          </div>
           <div className="detail-number">{day.emoji}</div>
           <p className="eyebrow">Day {day.day}</p>
-          <h2>{(day.theme && day.theme[lang]) || day.theme || day.title}</h2>
-          <p className="scripture">{(day.scripture && day.scripture[lang]) || day.scripture}</p>
-          <p className="detail-copy">{(day.summary && day.summary[lang]) || day.summary}</p>
-          <div className="detail-footer"><span>Virtue: {(day.virtue && day.virtue.title) || ''}</span><span className="status-dot">● {(day.evil && day.evil.title) || 'what to avoid'}</span></div>
+          <h2>{(day.theme && day.theme[lang]) || day.title || ''}</h2>
+          {day.scripture && (day.scripture[lang] || day.scripture) && (
+            <p className="scripture">{(day.scripture && day.scripture[lang]) || day.scripture}</p>
+          )}
+          {(day.summary && (day.summary[lang] || day.summary)) && (
+            <p className="detail-copy">{(day.summary && day.summary[lang]) || day.summary}</p>
+          )}
+          <div className="detail-footer">
+            {day.virtue && day.virtue.title && (
+              <span>Virtue: <strong>{day.virtue.title}</strong></span>
+            )}
+            {day.evil && day.evil.title && (
+              <span className="status-dot">● Avoid: <strong>{day.evil.title}</strong></span>
+            )}
+          </div>
         </aside>
       </section>
     </main>
