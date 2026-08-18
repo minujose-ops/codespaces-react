@@ -6,51 +6,45 @@
     "totalDays": 40
   },
   "days": [
-    {
-      "day": 1,
-      "emoji": "🙏",
-      "theme": {
-        "en": "Begin Your Journey",
-        "ml": "നിങ്ങളുടെ യാത്ര ആരംഭിക്കുക"
-      },
-      "scripture": {
-        "en": "Matthew 4:4",
-        "ml": "മത്തായി 4:4"
-      },
-      "summary": {
-        "en": "The beginning of a transformative 40-day spiritual journey with the Eucharist.",
-        "ml": "വിശുദ്ധ കുർബാനയോടൊപ്പം 40 ദിവസത്തെ ആത്മീയ യാത്രയുടെ ആരംഭം."
-      },
-      "virtue": {
-        "title": "Faith",
-        "description": "Belief in God's guidance"
-      },
-      "evil": {
-        "title": "Doubt"
-      }
-    },
-    {
-      "day": 2,
-      "emoji": "✨",
-      "theme": {
-        "en": "Seek Divine Guidance",
-        "ml": "ദൈവിക നിർദേശം തേടുക"
-      },
-      "scripture": {
-        "en": "Proverbs 3:5-6",
-        "ml": "സദൃശ്യങ്ങൾ 3:5-6"
-      },
-      "summary": {
-        "en": "Trust in the Lord with all your heart and He will guide your paths.",
-        "ml": "നിങ്ങളുടെ ഹൃദയം മുഴുവനോടെ കർത്താവിൽ വിശ്വാസം വയ്ക്കുക."
-      },
-      "virtue": {
-        "title": "Trust",
-        "description": "Complete faith in God's plan"
-      },
-      "evil": {
-        "title": "Distrust"
-      }
-    }
+    {"day": 1, "emoji": "🙏", "theme": {"en": "Begin Your Journey", "ml": "നിങ്ങളുടെ യാത്ര ആരംഭിക്കുക"}, "scripture": {"en": "Matthew 4:4", "ml": "മത്തായി 4:4"}, "summary": {"en": "The beginning of a transformative 40-day spiritual journey with the Eucharist.", "ml": "വിശുദ്ധ കുർബാനയോടൊപ്പം 40 ദിവസത്തെ ആത്മീയ യാത്രയുടെ ആരംഭം."}, "virtue": {"title": "Faith", "description": "Belief in God's guidance"}, "evil": {"title": "Doubt"}},
+    {"day": 2, "emoji": "✨", "theme": {"en": "Seek Divine Guidance", "ml": "ദൈവിക നിർദേശം തേടുക"}, "scripture": {"en": "Proverbs 3:5-6", "ml": "സദൃശ്യങ്ങൾ 3:5-6"}, "summary": {"en": "Trust in the Lord with all your heart and He will guide your paths.", "ml": "നിങ്ങളുടെ ഹൃദയം മുഴുവനോടെ കർത്താവിൽ വിശ്വാസം വയ്ക്കുക."}, "virtue": {"title": "Trust", "description": "Complete faith in God's plan"}, "evil": {"title": "Distrust"}},
+    {"day": 3, "emoji": "💝", "theme": {"en": "Embrace God's Love", "ml": "ദൈവത്തിന്റെ സ്നേഹം സ്വീകരിക്കുക"}, "scripture": {"en": "John 3:16", "ml": "യോഹന്നാൻ 3:16"}, "summary": {"en": "God loves us unconditionally and sacrificed His son for our redemption.", "ml": "ദൈവം നമ്മെ കേവലമായി സ്നേഹിക്കുന്നു."}, "virtue": {"title": "Love", "description": "God's unconditional love"}, "evil": {"title": "Selfishness"}},
+    {"day": 4, "emoji": "🔥", "theme": {"en": "Holy Spirit's Fire", "ml": "പരിശുദ്ധ ആത്മാവിന്റെ തീ"}, "scripture": {"en": "Acts 2:4", "ml": "അപ്പോസ്തോലർ 2:4"}, "summary": {"en": "The Holy Spirit empowers us to transform our lives and spread God's love.", "ml": "പരിശുദ്ധ ആത്മാവ് നമ്മെ ശക്തിപ്പെടുത്തുന്നു."}, "virtue": {"title": "Zeal", "description": "Fervent desire to serve God"}, "evil": {"title": "Apathy"}},
+    {"day": 5, "emoji": "🌅", "theme": {"en": "Renewal & Rebirth", "ml": "പുനരുജ്ജീവനം"}, "scripture": {"en": "2 Corinthians 5:17", "ml": "2 കരിന്തിയർ 5:17"}, "summary": {"en": "In Christ, we become new creations with purpose and hope.", "ml": "ക്രിസ്തുവിൽ നാം പുതിയ സൃഷ്ടി."}, "virtue": {"title": "Renewal", "description": "Spiritual rebirth in Christ"}, "evil": {"title": "Stagnation"}},
+    {"day": 6, "emoji": "⛪", "theme": {"en": "Sacrament of Grace", "ml": "കൃപയുടെ കർത്തവ്യം"}, "scripture": {"en": "John 6:51", "ml": "യോഹന്നാൻ 6:51"}, "summary": {"en": "The Eucharist is the sacrament of grace, sustaining our spiritual life.", "ml": "വിശുദ്ധ കുർബാന നമ്മുടെ ആത്മീയ ജീവനത്തെ പോഷിപ്പിക്കുന്നു."}, "virtue": {"title": "Reverence", "description": "Deep respect for God's presence"}, "evil": {"title": "Irreverence"}},
+    {"day": 7, "emoji": "🕊️", "theme": {"en": "Peace Within", "ml": "അന്തരിക ശാന്തി"}, "scripture": {"en": "John 14:27", "ml": "യോഹന്നാൻ 14:27"}, "summary": {"en": "Jesus offers us His peace, not as the world gives, but true peace.", "ml": "യേശു നമ്മെ ശാന്തി നൽകുന്നു."}, "virtue": {"title": "Peace", "description": "Spiritual tranquility and calm"}, "evil": {"title": "Anxiety"}},
+    {"day": 8, "emoji": "💪", "theme": {"en": "Strength in Weakness", "ml": "ദുർബലതയിൽ ശക്തി"}, "scripture": {"en": "2 Corinthians 12:9", "ml": "2 കരിന്തിയർ 12:9"}, "summary": {"en": "God's grace is sufficient; His power is made perfect in our weakness.", "ml": "ദൈവത്തിന്റെ കൃപ നമ്മുടെ ദുർബലതയിൽ പൂർണ്ണമായ ശക്തി നൽകുന്നു."}, "virtue": {"title": "Humility", "description": "Acknowledging dependence on God"}, "evil": {"title": "Pride"}},
+    {"day": 9, "emoji": "🌟", "theme": {"en": "Light of the World", "ml": "ലോകത്തിന്റെ വെളിച്ച"}, "scripture": {"en": "Matthew 5:14-16", "ml": "മത്തായി 5:14-16"}, "summary": {"en": "We are called to be the light of Christ in a darkened world.", "ml": "നാം ക്രിസ്തുവിന്റെ വെളിച്ച ലോകത്തിലേക്ക് ഉയർത്തേണ്ടതാണ്."}, "virtue": {"title": "Witness", "description": "Living testimony of Christ's love"}, "evil": {"title": "Hidden Light"}},
+    {"day": 10, "emoji": "🙌", "theme": {"en": "Praise and Worship", "ml": "സ്തുതി ആരാധന"}, "scripture": {"en": "Psalm 100", "ml": "സങ്കീർത്തനം 100"}, "summary": {"en": "Enter His gates with thanksgiving and praise His holy name.", "ml": "സ്തുതിയോടെ പ്രവേശിച്ച് ദൈവത്തെ സുമനസ്കരിക്കുവാൻ ആഹ്വാനം ചെയ്യപ്പെടുന്നു."}, "virtue": {"title": "Gratitude", "description": "Thankfulness for God's blessings"}, "evil": {"title": "Ingratitude"}},
+    {"day": 11, "emoji": "💒", "theme": {"en": "Temple of the Holy Spirit", "ml": "പരിശുദ്ധ ആത്മാവിന്റെ ക്ഷേത്രം"}, "scripture": {"en": "1 Corinthians 6:19", "ml": "1 കരിന്തിയർ 6:19"}, "summary": {"en": "Our bodies are temples of the Holy Spirit; treat them with respect.", "ml": "നമ്മുടെ ശരീരം പരിശുദ്ധ ആത്മാവിന്റെ ക്ഷേത്രം."}, "virtue": {"title": "Purity", "description": "Honoring God through our body"}, "evil": {"title": "Defilement"}},
+    {"day": 12, "emoji": "🎁", "theme": {"en": "Gifts of the Spirit", "ml": "ആത്മാവിന്റെ വരദാനങ്ങൾ"}, "scripture": {"en": "1 Corinthians 12:4-11", "ml": "1 കരിന്തിയർ 12:4-11"}, "summary": {"en": "The Holy Spirit distributes gifts to each believer for the common good.", "ml": "പരിശുദ്ധ ആത്മാവ് ഓരോ വിശ്വാസിക്കും വരദാനങ്ങൾ നൽകുന്നു."}, "virtue": {"title": "Generosity", "description": "Using God's gifts to serve others"}, "evil": {"title": "Selfishness"}},
+    {"day": 13, "emoji": "🙏", "theme": {"en": "Power of Prayer", "ml": "പ്രാർത്ഥനയുടെ ശക്തി"}, "scripture": {"en": "Matthew 21:22", "ml": "മത്തായി 21:22"}, "summary": {"en": "Whatever you ask in prayer, believing, you will receive.", "ml": "പ്രാർത്ഥനയിലൂടെ നമ്മുടെ അപേക്ഷകൾ പൂർണ്ണമാകുന്നു."}, "virtue": {"title": "Faith in Prayer", "description": "Trusting God's promises"}, "evil": {"title": "Doubt"}},
+    {"day": 14, "emoji": "📖", "theme": {"en": "God's Word", "ml": "ദൈവത്തിന്റെ വചനം"}, "scripture": {"en": "Deuteronomy 6:6", "ml": "സംഖ്യ വിവരണം 6:6"}, "summary": {"en": "Let God's words be upon your heart and teach them diligently.", "ml": "ദൈവത്തിന്റെ വചനം നമ്മുടെ ഹൃദയത്തിലിരിക്കട്ടെ."}, "virtue": {"title": "Wisdom", "description": "Knowledge of God's truth"}, "evil": {"title": "Ignorance"}},
+    {"day": 15, "emoji": "🤝", "theme": {"en": "Unity in Christ", "ml": "ക്രിസ്തുവിലെ ഐക്യം"}, "scripture": {"en": "1 Corinthians 12:12-13", "ml": "1 കരിന്തിയർ 12:12-13"}, "summary": {"en": "We are one body in Christ, many members with different gifts.", "ml": "നാം ക്രിസ്തുവിലെ ഒരേ ശരീരം, വിവിധ അംഗങ്ങൾ."}, "virtue": {"title": "Unity", "description": "Harmony among believers"}, "evil": {"title": "Division"}},
+    {"day": 16, "emoji": "❤️", "theme": {"en": "Love One Another", "ml": "ഒരുപോലെ സ്നേഹിക്കുവാൻ"}, "scripture": {"en": "1 John 4:7-8", "ml": "1 യോഹന്നാൻ 4:7-8"}, "summary": {"en": "Beloved, let us love one another, for love is of God.", "ml": "പ്രിയപ്പെട്ടവരേ, നാം പരസ്പരം സ്നേഹിക്കുവോൻ."}, "virtue": {"title": "Brotherly Love", "description": "Selfless love for others"}, "evil": {"title": "Hatred"}},
+    {"day": 17, "emoji": "🍞", "theme": {"en": "Bread of Life", "ml": "ജീവന്റെ അപ്പം"}, "scripture": {"en": "John 6:35", "ml": "യോഹന്നാൻ 6:35"}, "summary": {"en": "Jesus is the Bread of Life; whoever comes to Him will never hunger.", "ml": "യേശു ജീവന്റെ അപ്പം; അവനിലേക്ക് വരുന്നവർ ഭൂക്ഷായ നുഭവിക്കുകയില്ല."}, "virtue": {"title": "Spiritual Nourishment", "description": "Feeding on Christ's word"}, "evil": {"title": "Spiritual Hunger"}},
+    {"day": 18, "emoji": "🩹", "theme": {"en": "Divine Healing", "ml": "ദൈവിക സുഖം"}, "scripture": {"en": "1 Peter 2:24", "ml": "1 പത്രോസ് 2:24"}, "summary": {"en": "By His wounds we are healed; Christ bears our pain and sickness.", "ml": "അവന്റെ മുറിവിനാൽ നാം സുസ്ഥനായി."}, "virtue": {"title": "Healing", "description": "Trust in God's restorative power"}, "evil": {"title": "Despair"}},
+    {"day": 19, "emoji": "⛓️", "theme": {"en": "Freedom in Christ", "ml": "ക്രിസ്തുവിലെ സ്വാതന്ത്ര്യം"}, "scripture": {"en": "John 8:36", "ml": "യോഹന്നാൻ 8:36"}, "summary": {"en": "If the Son sets you free, you are truly free from sin's bondage.", "ml": "പുത്രൻ നിങ്ങളെ മോചിപ്പിച്ചാൽ നിങ്ങൾ സത്യത്തിൽ സ്വതന്ത്രരാണ്."}, "virtue": {"title": "Liberation", "description": "Freedom from sin and darkness"}, "evil": {"title": "Bondage"}},
+    {"day": 20, "emoji": "🚪", "theme": {"en": "Door of Salvation", "ml": "രക്ഷയുടെ വാതിൽ"}, "scripture": {"en": "John 10:9", "ml": "യോഹന്നാൻ 10:9"}, "summary": {"en": "I am the door; if anyone enters through Me, he will be saved.", "ml": "ഞാനാണ് വാതിൽ; എന്നിലൂടെ ആരെങ്കിലും പ്രവേശിച്ചാൽ രക്ഷ പെരും."}, "virtue": {"title": "Salvation", "description": "Trust in Christ as our savior"}, "evil": {"title": "Rejection"}},
+    {"day": 21, "emoji": "👼", "theme": {"en": "Angels Among Us", "ml": "നമ്മുടെ കൂടെ ദൂതന്മാർ"}, "scripture": {"en": "Hebrews 1:14", "ml": "എബ്രായർ 1:14"}, "summary": {"en": "Angels are ministering spirits serving those who inherit salvation.", "ml": "ദൂതന്മാർ രക്ഷ പെരുവരുടെ സേവകരാണ്."}, "virtue": {"title": "Divine Protection", "description": "God's care through His angels"}, "evil": {"title": "Abandonment"}},
+    {"day": 22, "emoji": "🌊", "theme": {"en": "Living Water", "ml": "ജീവജലം"}, "scripture": {"en": "John 7:38", "ml": "യോഹന്നാൻ 7:38"}, "summary": {"en": "Whoever believes in Me, out of his heart will flow rivers of living water.", "ml": "എന്നിൽ വിശ്വാസം കൂടിയവരിൽ നിന്ന് ജീവജലത്തിന്റെ നദികൾ ഒഴുകും."}, "virtue": {"title": "Spiritual Thirst", "description": "Hunger for God's presence"}, "evil": {"title": "Spiritual Dryness"}},
+    {"day": 23, "emoji": "🔗", "theme": {"en": "Bound by Love", "ml": "സ്നേഹത്താൽ കെട്ടിയിരിക്കുന്നു"}, "scripture": {"en": "Ephesians 4:2-3", "ml": "എഫെസ് 4:2-3"}, "summary": {"en": "Walk in love, striving to preserve the unity of the Spirit.", "ml": "സ്നേഹത്തിൽ നടക്കുവിൻ, ആത്മാവിന്റെ ഐക്യം പാലിക്കുവിൻ."}, "virtue": {"title": "Forbearance", "description": "Patient tolerance and understanding"}, "evil": {"title": "Intolerance"}},
+    {"day": 24, "emoji": "🔔", "theme": {"en": "Call to Holiness", "ml": "പരിശുദ്ധതയോടുള്ള ആഹ്വാനം"}, "scripture": {"en": "1 Thessalonians 4:3", "ml": "1 തെസ്സലോനിക്കിയർ 4:3"}, "summary": {"en": "God's will is your sanctification; live holy and pleasing to Him.", "ml": "ദൈവത്തിന്റെ ഇച്ഛ നിങ്ങളുടെ പരിശുദ്ധതയാണ്."}, "virtue": {"title": "Sanctification", "description": "Striving to be holy"}, "evil": {"title": "Sin"}},
+    {"day": 25, "emoji": "🎯", "theme": {"en": "Purpose and Calling", "ml": "ആവശ്യവും വിളിയും"}, "scripture": {"en": "Jeremiah 29:11", "ml": "യിരെമിയാവ് 29:11"}, "summary": {"en": "For I know the plans I have for you, plans to prosper and not harm you.", "ml": "നിങ്ങൾക്കായുള്ള ദൈവത്തിന്റെ പദ്ധതി നിങ്ങളുടെ നന്മയ്ക്കുവേണ്ടി അത്രെ."}, "virtue": {"title": "Purpose", "description": "Understanding God's divine plan"}, "evil": {"title": "Aimlessness"}},
+    {"day": 26, "emoji": "🎤", "theme": {"en": "Voice for the Voiceless", "ml": "നിശബ്ദരുടെ വോയ്സ്"}, "scripture": {"en": "Proverbs 31:8-9", "ml": "സദൃശ്യങ്ങൾ 31:8-9"}, "summary": {"en": "Speak up for those who cannot speak for themselves.", "ml": "തങ്ങളുടെ കണ്ണ് തുറന്നേ സംസാരിക്കാൻ കഴിയാതിരിക്കുന്നവരുടെ വേണ്ടി സംസാരിക്കുവിൻ."}, "virtue": {"title": "Advocacy", "description": "Defending the vulnerable"}, "evil": {"title": "Injustice"}},
+    {"day": 27, "emoji": "🛡️", "theme": {"en": "Armor of God", "ml": "ദൈവത്തിന്റെ കവചം"}, "scripture": {"en": "Ephesians 6:10-11", "ml": "എഫെസ് 6:10-11"}, "summary": {"en": "Put on the full armor of God to stand against the schemes of evil.", "ml": "ദൈവത്തിന്റെ സമ്പൂർണ കവചം ധരിക്കുവിൻ."}, "virtue": {"title": "Spiritual Warfare", "description": "Defense against evil"}, "evil": {"title": "Vulnerability"}},
+    {"day": 28, "emoji": "🌱", "theme": {"en": "Spiritual Growth", "ml": "ആത്മീയ വികാശം"}, "scripture": {"en": "2 Peter 3:18", "ml": "2 പത്രോസ് 3:18"}, "summary": {"en": "Grow in the grace and knowledge of our Lord Jesus Christ.", "ml": "നമ്മുടെ കർത്താവായ യേശു ക്രിസ്തുവിന്റെ കൃപയിലും പരിജ്ഞാനത്തിലും വർദ്ധിച്ചു വരുന്നു."}, "virtue": {"title": "Maturity", "description": "Spiritual development and growth"}, "evil": {"title": "Spiritual Stagnation"}},
+    {"day": 29, "emoji": "💒", "theme": {"en": "Community of Believers", "ml": "വിശ്വാസികളുടെ സമൂഹം"}, "scripture": {"en": "Acts 2:44-47", "ml": "അപ്പോസ്തോലർ 2:44-47"}, "summary": {"en": "The early church shared all things and lived in unity and joy.", "ml": "നിരന്തരം കൂട്ടായി പ്രാർത്ഥന, ആരാധന, ജപം നടത്തിയിരുന്നു."}, "virtue": {"title": "Community", "description": "Fellowship and mutual support"}, "evil": {"title": "Isolation"}},
+    {"day": 30, "emoji": "🌍", "theme": {"en": "Mission to All Nations", "ml": "എല്ലാ ജനതകൾക്കും അരുളപ്പാട്"}, "scripture": {"en": "Matthew 28:19-20", "ml": "മത്തായി 28:19-20"}, "summary": {"en": "Go and make disciples of all nations, teaching them all I have commanded.", "ml": "അതിനാൽ നിങ്ങൾ എല്ലാ ജനതകളെയും ശിഷ്യാക്കണം."}, "virtue": {"title": "Evangelism", "description": "Sharing the Gospel with others"}, "evil": {"title": "Indifference"}},
+    {"day": 31, "emoji": "🎊", "theme": {"en": "Celebration of Faith", "ml": "വിശ്വാസത്തിന്റെ ആഘോഷം"}, "scripture": {"en": "Philippians 4:4", "ml": "ഫിലിപ്പിയർ 4:4"}, "summary": {"en": "Rejoice in the Lord always; again I will say rejoice.", "ml": "കർത്താവിലും നിത്യനന്ദനത്തിലും നിന്ന് വിലപിക്കുന്നു."}, "virtue": {"title": "Joy", "description": "Happiness in God's presence"}, "evil": {"title": "Despair"}},
+    {"day": 32, "emoji": "🤲", "theme": {"en": "Servant Heart", "ml": "സേവകന്റെ ഹൃദയം"}, "scripture": {"en": "Mark 10:45", "ml": "മാർക്കോസ് 10:45"}, "summary": {"en": "The Son of Man did not come to be served, but to serve.", "ml": "മനുഷ്യപുത്രനും സേവിക്കപ്പെടുവാനല്ല സേവന ചെയ്യുവാനായി വന്നിരിക്കുന്നു."}, "virtue": {"title": "Humility", "description": "Willing service to others"}, "evil": {"title": "Arrogance"}},
+    {"day": 33, "emoji": "⚡", "theme": {"en": "Power to Overcome", "ml": "വെല്ലുവിളി ജയിക്കുവാൻ ശക്തി"}, "scripture": {"en": "Romans 8:37", "ml": "റോമാക്കർ 8:37"}, "summary": {"en": "We are more than conquerors through Him who loved us.", "ml": "നമ്മെ സ്നേഹിച്ചവനിലൂടെ നാം ഇതെല്ലാത്തെയും ജയിച്ച് കൊണ്ടു പോകുന്നു."}, "virtue": {"title": "Victory", "description": "Triumph over adversity"}, "evil": {"title": "Defeat"}},
+    {"day": 34, "emoji": "🙇", "theme": {"en": "Repentance and Renewal", "ml": "മെത്ത തിരിഞ്ഞുവരൽ പുനരുജ്ജീവനം"}, "scripture": {"en": "Acts 3:19", "ml": "അപ്പോസ്തോലർ 3:19"}, "summary": {"en": "Repent and turn to God so that your sins may be wiped out.", "ml": "നിങ്ങളുടെ പാപങ്ങൾ സ്വീകാരം ചെയ്ത് തിരിഞ്ഞുവരുവിൻ."}, "virtue": {"title": "Repentance", "description": "Sincere turning away from sin"}, "evil": {"title": "Impenitence"}},
+    {"day": 35, "emoji": "🕯️", "theme": {"en": "Light in Darkness", "ml": "ഇരുട്ടിലെ വെളിച്ച"}, "scripture": {"en": "Isaiah 9:2", "ml": "യെശയ്യാ 9:2"}, "summary": {"en": "The people living in darkness have seen a great light.", "ml": "ഇരുട്ടിൽ ഇരുന്നുകൊണ്ടിരുന്നവർ മഹാ വെളിച്ച കണ്ടു."}, "virtue": {"title": "Hope", "description": "Trust in God's redemption"}, "evil": {"title": "Hopelessness"}},
+    {"day": 36, "emoji": "👑", "theme": {"en": "Kingdom of God", "ml": "ദൈവരാജ്യം"}, "scripture": {"en": "Matthew 6:33", "ml": "മത്തായി 6:33"}, "summary": {"en": "Seek first the kingdom of God and His righteousness.", "ml": "ദൈവരാജ്യത്തെയും അവന്റെ നീതിയെയും കൂടുതൽ അന്വേഷിച്ചു നടവിൻ."}, "virtue": {"title": "Priorities", "description": "Putting God first in all things"}, "evil": {"title": "Worldliness"}},
+    {"day": 37, "emoji": "🌹", "theme": {"en": "Beauty of Surrender", "ml": "കരണതയുടെ സൌന്ദര്യം"}, "scripture": {"en": "Romans 12:1", "ml": "റോമാക്കർ 12:1"}, "summary": {"en": "Offer your bodies as living sacrifices, holy and pleasing to God.", "ml": "നിങ്ങളുടെ ശരീരം ജീവനുള്ള നിവേദ്യമായി നിവേദിക്കുവിൻ."}, "virtue": {"title": "Surrender", "description": "Complete dedication to God"}, "evil": {"title": "Self-Will"}},
+    {"day": 38, "emoji": "🌈", "theme": {"en": "Covenant Promise", "ml": "ശാസ്ത്ര വാഗ്ദത്തം"}, "scripture": {"en": "Hebrews 8:6", "ml": "എബ്രായർ 8:6"}, "summary": {"en": "Jesus is the mediator of a better covenant with better promises.", "ml": "യേശു ഉത്തമ നിയമത്തിന്റെ മധ്യസ്ഥൻ."}, "virtue": {"title": "Trust in Promises", "description": "Faith in God's covenant"}, "evil": {"title": "Doubt"}},
+    {"day": 39, "emoji": "🕊️", "theme": {"en": "Fruit of the Spirit", "ml": "ആത്മാവിന്റെ ഫലം"}, "scripture": {"en": "Galatians 5:22-23", "ml": "ഗലാത്യർ 5:22-23"}, "summary": {"en": "The fruit of the Spirit is love, joy, peace, patience, kindness, goodness, faithfulness.", "ml": "ആത്മാവിന്റെ ഫലം സ്നേഹം, സന്തോഷം, ശാന്തി, ക്ഷമ, ദയ, നന്മ."}, "virtue": {"title": "Spiritual Fruit", "description": "Character transformation in Christ"}, "evil": {"title": "Works of the Flesh"}},
+    {"day": 40, "emoji": "🙌", "theme": {"en": "Resurrection and Eternity", "ml": "പുനരുത്ഥാനവും നിത്യതയും"}, "scripture": {"en": "1 Corinthians 15:57", "ml": "1 കരിന്തിയർ 15:57"}, "summary": {"en": "Thanks be to God, who gives us the victory through our Lord Jesus Christ.", "ml": "നമ്മുടെ കർത്താവായ യേശു ക്രിസ്തുവിലൂടെ നമ്മെ വിജയം നൽകുന്ന ദൈവത്തിന് നന്ദി."}, "virtue": {"title": "Eternal Life", "description": "Hope in resurrection and eternity"}, "evil": {"title": "Despair about the Future"}}
   ]
 }
