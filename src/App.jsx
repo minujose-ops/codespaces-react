@@ -135,10 +135,6 @@ function App() {
   const [lang, setLang] = useState('en');
   const [loadingMsg, setLoadingMsg] = useState('Loading the 40-day journey...');
 
-  // Full-file text views (filtered)
-  const [fullTextEn, setFullTextEn] = useState('');
-  const [fullTextMl, setFullTextMl] = useState('');
-
   useEffect(() => {
     const closeOnEscape = (event) => {
       if (event.key === 'Escape') setIsDetailOpen(false);
@@ -163,25 +159,6 @@ function App() {
         return r.text();
       })
       .then((md) => {
-        // Build full-text panels
-        const lines = md.split(/\r?\n/);
-        const isMalayalam = (s) => /[\u0D00-\u0D7F]/.test(s);
-        const enLines = [];
-        const mlLines = [];
-        for (const line of lines) {
-          if (isMalayalam(line)) {
-            mlLines.push(line);
-          } else if (/[A-Za-z0-9]/.test(line)) {
-            enLines.push(line);
-          } else {
-            // neutral lines (empty or punctuation) - push to both so spacing remains
-            mlLines.push(line);
-            enLines.push(line);
-          }
-        }
-        setFullTextEn(enLines.join('\n'));
-        setFullTextMl(mlLines.join('\n'));
-
         // Try to parse the markdown into days; if parsing fails, fallback to JSON
         const parsed = parseDocTextToContent(md);
         if (parsed) {
@@ -260,7 +237,7 @@ function App() {
 
   const indexHeading = lang === 'en' ? '40 Days · Eucharistic Deliverance Prayer' : 'വിശുദ്ധ കുർബാനയോടൊപ്പം 40 ദിനങ്ങൾ';
 
-  // Hardcoded Day 1 content (English) as requested. Malayalam tab will show the same structure until translations are provided.
+  // Retain the detailed English Day 1 reference content.
   const day1ContentEn = {
     scriptureReadings: [
       {
@@ -299,6 +276,7 @@ function App() {
         <div>
           <p className="eyebrow">{series.title}</p>
           <h1>{series.subtitle}</h1>
+          <p className="byline">Fr. Daniel Poovannathil</p>
         </div>
 
         <div className="header-right">
@@ -361,43 +339,6 @@ function App() {
             )}
           </div>
 
-          {/* Full-text tabs: show the entire repo markdown split by language. */}
-          {(fullTextEn || fullTextMl) && (
-            <div className="full-text-section">
-              <div className="full-text-heading">
-                <p className="eyebrow">Full text</p>
-                <h3>Complete content</h3>
-              </div>
-              <div className="full-text-tabs" role="tablist" aria-label="Full text language tabs">
-                <button
-                  type="button"
-                  role="tab"
-                  aria-selected={lang === 'ml'}
-                  className={"full-tab " + (lang === 'ml' ? 'active' : '')}
-                  onClick={() => setLang('ml')}
-                >
-                  Malayalam
-                </button>
-                <button
-                  type="button"
-                  role="tab"
-                  aria-selected={lang === 'en'}
-                  className={"full-tab " + (lang === 'en' ? 'active' : '')}
-                  onClick={() => setLang('en')}
-                >
-                  English
-                </button>
-              </div>
-
-              <div className="full-text-panel">
-                {lang === 'ml' ? (
-                  <pre className="full-text" aria-label="Malayalam full text">{fullTextMl || 'Malayalam content not available.'}</pre>
-                ) : (
-                  <pre className="full-text" aria-label="English full text">{fullTextEn || 'English content not available.'}</pre>
-                )}
-              </div>
-            </div>
-          )}
         </div>
 
       </section>
