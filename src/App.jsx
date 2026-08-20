@@ -9,74 +9,62 @@ const SECONDARY_FALLBACK = 'https://jaicyjoy.github.io/40-days/data/days.json';
 
 // The markdown file added to the repo contains bilingual content. We'll fetch it and create
 // two filtered views: Malayalam-only and English-only (simple heuristics by character ranges).
-const REPO_MD_PATH = 'വിശുദ്ധ കുർബാനയോടൊപ്പം 40 ദിനങ്ങൾ.md';
+const REPO_MD_PATH = 'വിശുദ്ധ കുർബാനയോടൊപ്പം 40 ദിനങ്ങൾ.md';
 const RAW_MD_URL = `https://raw.githubusercontent.com/minujose-ops/codespaces-react/main/${encodeURIComponent(REPO_MD_PATH)}`;
 
 function parseDocTextToContent(text) {
-  // Try to split the export by "Day <n>" markers. This is heuristic and depends on doc structure.
-  const dayRegex = /Day\s*(\d+)\b[\s\S]*?(?=(?:\nDay\s*\d+\b)|$)/gi;
+  const dayRegex = /(?:^|\n)Day\s*(\d+)\s*:\s*([^\n]*)[\s\S]*?(?=(?:\nDay\s*\d+\s*:)|$)/gi;
   const days = [];
-  let match;
+  const sectionRegex = /Scripture Readings?:|Related Verses?:|Supporting Scriptures?:|Supporting Concepts from the Five Sacrifices:|Today's Virtues and Practices|Today's Virtue & Task|Things to Do Today|My Prayer (?:for )?Today/gi;
+  const clean = (value) => value.replace(/\s+/g, ' ').replace(/^[-–—:]+\s*/, '').trim();
+  const bullets = (value) => [...value.matchAll(/(?:^|\n)\s*[●*]\s*([\s\S]*?)(?=\n\s*[●*]\s*|$)/g)].map(([, item]) => clean(item));
+  const section = (block, label) => {
+    const start = block.search(new RegExp(label, 'i'));
+    if (start < 0) return '';
+    const remainder = block.slice(start + block.slice(start).match(new RegExp(label, 'i'))[0].length);
+    const next = remainder.search(sectionRegex);
+    return (next < 0 ? remainder : remainder.slice(0, next)).trim();
+  };
+  const labeledValue = (value, labels) => {
+    const match = value.match(new RegExp(`(?:${labels})\\s*(?:\\||-|:)\\s*([\\s\\S]*)`, 'i'));
+    return match ? clean(match[1]) : '';
+  };
 
-  while ((match = dayRegex.exec(text)) !== null) {
-    const dayBlock = match[0];
-    const dayNum = parseInt(match[1], 10);
-
-    // Remove the "Day X" heading from the block
-    const block = dayBlock.replace(new RegExp('^Day\\s*' + dayNum, 'i'), '').trim();
-
-    // Split into lines and try to detect Malayalam vs English lines
-    const lines = block.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
-
-    // Heuristic: English lines are mostly Latin characters; Malayalam has characters in \u0D00-\u0D7F
-    const isMalayalam = (s) => /[\u0D00-\u0D7F]/.test(s);
-
-    // Collect english and malayalam content
-    let en = '';
-    let ml = '';
-
-    // If there are explicit labels like "English:" or "Malayalam:" use them
-    const labeledEn = lines.find(l => /^English[:\-]/i.test(l) || /^EN[:\-]/i.test(l));
-    const labeledMl = lines.find(l => /^Malayalam[:\-]/i.test(l) || /^ML[:\-]/i.test(l));
-
-    if (labeledEn || labeledMl) {
-      if (labeledEn) en = labeledEn.replace(/^English[:\-]\s*/i, '').replace(/^EN[:\-]\s*/i, '');
-      if (labeledMl) ml = labeledMl.replace(/^Malayalam[:\-]\s*/i, '').replace(/^ML[:\-]\s*/i, '');
-    } else {
-      // Fallback heuristics: first Latin line -> English, first Malayalam line -> Malayalam
-      for (const line of lines) {
-        if (!en && !isMalayalam(line)) en = line;
-        if (!ml && isMalayalam(line)) ml = line;
-        if (en && ml) break;
-      }
-
-      // If we didn't find a Malayalam line, but there are multiple lines, assume the second line is Malayalam
-      if (!ml && lines.length >= 2) ml = lines[1];
-      if (!en && lines.length >= 1) en = lines[0];
-    }
-
-    // For tile title and summary, use the first short sentence/line detected per language
-    const pickTitle = (s) => {
-      if (!s) return '';
-      const parts = s.split(/\.|\n|–|-|—/).map(p => p.trim()).filter(Boolean);
-      return parts[0];
-    };
+  for (const match of text.matchAll(dayRegex)) {
+    const dayNum = Number(match[1]);
+    const block = match[0].replace(/^\s*Day\s*\d+\s*:\s*[^\n]*/i, '').trim();
+    const title = clean(match[2]) || clean(block.split(/\r?\n/).find((line) => line.trim()) || `Day ${dayNum}`);
+    const scriptureBlock = section(block, 'Scripture Readings?:|Scripture Reading');
+    const scriptureItems = bullets(scriptureBlock);
+    const relatedItems = bullets(section(block, 'Related Verses?:|Supporting Scriptures?:|Supporting Concepts from the Five Sacrifices:'));
+    const practiceBlock = section(block, "Today's Virtues and Practices|Today's Virtue & Task");
+    const thingsToDo = bullets(section(block, 'Things to Do Today'));
+    const prayerBlock = section(block, 'My Prayer (?:for )?Today');
+    const coreMatch = practiceBlock.match(/(?:Core Thought|Key thought|मुख ചിന്ത)\s*\|\s*([\s\S]*?)(?=\n\s*(?:Things to Do|$))/i);
 
     days.push({
       day: dayNum,
       emoji: '🙏',
-      theme: { en: pickTitle(en), ml: pickTitle(ml) },
-      scripture: { en: '', ml: '' },
-      summary: { en, ml },
-      virtue: { title: '', description: '' },
-      evil: { title: '' },
+      available: true,
+      theme: { en: title, ml: title },
+      scripture: { en: scriptureItems.map((item) => item.split(/\s+-\s+|\s+—\s+/)[0]).join(', '), ml: '' },
+      scriptureReadings: scriptureItems.map((item) => {
+        const [reference, ...textParts] = item.split(/\s+-\s+|\s+—\s+/);
+        return { reference: clean(reference), text: clean(textParts.join(' - ')) };
+      }),
+      relatedVerses: relatedItems,
+      virtues: { en: labeledValue(practiceBlock, 'Virtue to Practice|Virtue to practise'), ml: '' },
+      vices: { en: labeledValue(practiceBlock, 'Vice to Avoid|Vice to release'), ml: '' },
+      practice: { en: labeledValue(practiceBlock, "Today's Practice|Today's practice|Today's practice -"), ml: '' },
+      prayerToRepeat: { en: labeledValue(practiceBlock, 'Prayer to Repeat|Prayer to repeat'), ml: '' },
+      coreThought: { en: coreMatch ? clean(coreMatch[1]) : '', ml: '' },
+      thingsToDo,
+      dailyPrayer: { en: clean(prayerBlock), ml: '' },
+      summary: { en: coreMatch ? clean(coreMatch[1]) : clean(prayerBlock), ml: '' },
     });
   }
 
-  // If we could not parse any days, return null so caller can fallback to JSON
   if (days.length === 0) return null;
-
-  // Sort by day
   days.sort((a, b) => a.day - b.day);
 
   return {
@@ -91,15 +79,81 @@ function parseDocTextToContent(text) {
   };
 }
 
+function localizedValue(value, language) {
+  if (!value) return '';
+  if (typeof value === 'string') return value;
+  return value[language] || value.en || value.ml || '';
+}
+
+function normalizeDay(day) {
+  return {
+    ...day,
+    theme: day.theme || day.title || '',
+    coreThought: day.coreThought || day.keyThought || '',
+    virtues: day.virtues || day.virtue?.detail || day.virtue?.title || '',
+    vices: day.vices || day.evil?.detail || day.evil?.title || '',
+    practice: day.practice || day.task?.detail || '',
+    thingsToDo: day.thingsToDo || day.reflection || [],
+    dailyPrayer: day.dailyPrayer || day.prayer?.text || day.closing || '',
+  };
+}
+
+function ensureFortyDays(source) {
+  const sourceDays = (source.days || []).map(normalizeDay);
+  const days = Array.from({ length: 40 }, (_, index) => {
+    const dayNumber = index + 1;
+    const existingDay = sourceDays.find(({ day }) => day === dayNumber);
+    return existingDay || {
+      day: dayNumber,
+      emoji: '○',
+      available: false,
+      theme: { en: `Day ${dayNumber}`, ml: `ദിവസം ${dayNumber}` },
+    };
+  }).map((day) => ({ ...day, available: day.available !== false }));
+
+  return {
+    ...source,
+    series: { ...source.series, totalDays: 40 },
+    days,
+  };
+}
+
+function mergeDaySources(primary, secondary) {
+  const primaryByDay = new Map((primary.days || []).map((day) => [day.day, day]));
+  const days = (secondary.days || []).map((day) => primaryByDay.get(day.day) || day);
+  const secondaryDayNumbers = new Set(days.map((day) => day.day));
+  return {
+    ...secondary,
+    days: days.concat((primary.days || []).filter((day) => !secondaryDayNumbers.has(day.day))),
+  };
+}
+
 function App() {
   const [content, setContent] = useState(null);
   const [selectedDay, setSelectedDay] = useState(1);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [lang, setLang] = useState('en');
   const [loadingMsg, setLoadingMsg] = useState('Loading the 40-day journey...');
 
   // Full-file text views (filtered)
   const [fullTextEn, setFullTextEn] = useState('');
   const [fullTextMl, setFullTextMl] = useState('');
+
+  useEffect(() => {
+    const closeOnEscape = (event) => {
+      if (event.key === 'Escape') setIsDetailOpen(false);
+    };
+
+    document.addEventListener('keydown', closeOnEscape);
+    return () => document.removeEventListener('keydown', closeOnEscape);
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = isDetailOpen ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isDetailOpen]);
 
   useEffect(() => {
     // Fetch the repo markdown file raw content and use it as primary source.
@@ -131,15 +185,24 @@ function App() {
         // Try to parse the markdown into days; if parsing fails, fallback to JSON
         const parsed = parseDocTextToContent(md);
         if (parsed) {
-          // Ensure Day 1 has the requested theme/title
-          const day1 = parsed.days.find(d => d.day === 1);
-          if (day1) {
-            day1.theme.en = 'Day 1: The Cosmic Temple';
-            // keep Malayalam theme untouched if available
-          }
-
-          setContent(parsed);
-          setSelectedDay(parsed.days[0]?.day || 1);
+          fetch(SECONDARY_FALLBACK)
+            .then((r) => {
+              if (!r.ok) throw new Error('Unable to load complete day data');
+              return r.json();
+            })
+            .then((json) => setContent(ensureFortyDays(mergeDaySources(parsed, json))))
+            .catch(() => {
+              fetch(FALLBACK_JSON)
+                .then((r) => {
+                  if (!r.ok) throw new Error('Unable to load local JSON');
+                  return r.json();
+                })
+                .then((json) => setContent(ensureFortyDays(json)))
+                .catch(() => {
+                  setContent(ensureFortyDays(parsed));
+                  setSelectedDay(parsed.days[0]?.day || 1);
+                });
+            });
         } else {
           // fallback to local JSON first
           setLoadingMsg('Falling back to the packaged JSON guide...');
@@ -148,7 +211,7 @@ function App() {
               if (!r.ok) throw new Error('Unable to load local JSON');
               return r.json();
             })
-            .then((json) => setContent(json))
+            .then((json) => setContent(ensureFortyDays(json)))
             .catch(() => {
               // If local JSON fails, try secondary fallback
               fetch(SECONDARY_FALLBACK)
@@ -156,7 +219,7 @@ function App() {
                   if (!r.ok) throw new Error('Unable to load secondary JSON');
                   return r.json();
                 })
-                .then((json) => setContent(json))
+                .then((json) => setContent(ensureFortyDays(json)))
                 .catch(() => setContent({ error: true }));
             });
         }
@@ -169,7 +232,7 @@ function App() {
             if (!r.ok) throw new Error('Unable to load local JSON');
             return r.json();
           })
-          .then((json) => setContent(json))
+          .then((json) => setContent(ensureFortyDays(json)))
           .catch(() => {
             // If local JSON fails, try secondary fallback
             fetch(SECONDARY_FALLBACK)
@@ -177,7 +240,7 @@ function App() {
                 if (!r.ok) throw new Error('Unable to load secondary JSON');
                 return r.json();
               })
-              .then((json) => setContent(json))
+              .then((json) => setContent(ensureFortyDays(json)))
               .catch(() => setContent({ error: true }));
           });
       });
@@ -278,9 +341,12 @@ function App() {
             {content.days && content.days.length > 0 ? (
               content.days.map((item) => (
                 <button
-                  className={`page-tile ${day.day === item.day ? 'is-active' : ''}`}
+                  className={`page-tile ${day.day === item.day ? 'is-active' : ''} ${item.available ? '' : 'is-unavailable'}`}
                   key={item.day}
-                  onClick={() => setSelectedDay(item.day)}
+                  onClick={() => {
+                    setSelectedDay(item.day);
+                    setIsDetailOpen(true);
+                  }}
                   type="button"
                   aria-pressed={day.day === item.day}
                 >
@@ -334,77 +400,48 @@ function App() {
           )}
         </div>
 
-        <aside className="detail-panel" aria-live="polite">
-          <div className="detail-topline">
-            <span>Selected day</span>
-            <span>{String(day.day).padStart(2, '0')}</span>
-          </div>
-          <div className="detail-number">{day.emoji}</div>
-          <p className="eyebrow">Day {day.day}</p>
-          <h2>{(day.theme && (day.theme[lang] || day.theme.en)) || day.title || ''}</h2>
-
-          {/* If Day 1, render the requested detailed structure */}
-          {day.day === 1 ? (
-            <div className="day-detail-body">
-              <section>
-                <h3>Scripture Readings:</h3>
-                {day1ContentEn.scriptureReadings.map((s, i) => (
-                  <p key={i} className="scripture">{s.ref} - {s.text}</p>
-                ))}
-              </section>
-
-              <section>
-                <h3>Related Verses:</h3>
-                <ul>
-                  {day1ContentEn.relatedVerses.map((rv, i) => <li key={i}>{rv}</li>)}
-                </ul>
-              </section>
-
-              <section>
-                <h3>Today's Virtues and Practices</h3>
-                <p><strong>Virtue to Practice |</strong> {day1ContentEn.virtues.title}: {day1ContentEn.virtues.description}</p>
-                <p><strong>Vice to Avoid |</strong> {day1ContentEn.vice}</p>
-                <p><strong>Today's Practice |</strong> {day1ContentEn.practice}</p>
-                <p><strong>Prayer to Repeat |</strong> {day1ContentEn.prayer}</p>
-                <p><strong>Core Thought |</strong> {day1ContentEn.coreThought}</p>
-              </section>
-
-              <section>
-                <h3>Things to Do Today</h3>
-                <ul>
-                  {day1ContentEn.thingsToDo.map((t, i) => <li key={i}>{t}</li>)}
-                </ul>
-              </section>
-
-              <section>
-                <h3>My Prayer for Today</h3>
-                <p>{day1ContentEn.myPrayer}</p>
-              </section>
-            </div>
-          ) : (
-            // Fallback rendering for other days
-            <>
-              {day.scripture && (day.scripture[lang] || day.scripture) && (
-                <p className="scripture">{(day.scripture && day.scripture[lang]) || day.scripture}</p>
-              )}
-              {(day.summary && (day.summary[lang] || day.summary)) && (
-                <p className="detail-copy">{(day.summary && day.summary[lang]) || day.summary}</p>
-              )}
-
-              <div className="detail-footer">
-                {day.virtue && day.virtue.title && (
-                  <span>Virtue: <strong>{day.virtue.title}</strong></span>
-                )}
-                {day.evil && day.evil.title && (
-                  <span className="status-dot">● Avoid: <strong>{day.evil.title}</strong></span>
-                )}
-              </div>
-            </>
-          )}
-        </aside>
       </section>
+
+      {isDetailOpen && (
+        <div className="detail-modal-backdrop" onMouseDown={(event) => event.target === event.currentTarget && setIsDetailOpen(false)}>
+          <section className="detail-modal" role="dialog" aria-modal="true" aria-labelledby="day-detail-title">
+            <div className="detail-modal-header">
+              <div>
+                <p className="eyebrow">Day {day.day} · Selected day</p>
+                <h2 id="day-detail-title">{localizedValue(day.theme || day.title, lang) || `Day ${day.day}`}</h2>
+              </div>
+              <button className="modal-close" type="button" onClick={() => setIsDetailOpen(false)} aria-label="Close day details">×</button>
+            </div>
+
+            <div className="detail-modal-scroll">
+              <div className="detail-number">{day.emoji || '🙏'}</div>
+              {!day.available && <DetailSection title="Content unavailable">This day's source content has not been provided yet.</DetailSection>}
+              {day.available && localizedValue(day.scripture, lang) && <p className="scripture">Scripture: {localizedValue(day.scripture, lang)}</p>}
+              {day.available && localizedValue(day.coreThought || day.summary, lang) && (
+                <DetailSection title="Core thought">{localizedValue(day.coreThought || day.summary, lang)}</DetailSection>
+              )}
+              {day.available && day.scriptureReadings?.length > 0 && (
+                <DetailSection title="Scripture readings">
+                  {day.scriptureReadings.map((reading) => <p key={reading.reference}><strong>{reading.reference}</strong> {reading.text}</p>)}
+                </DetailSection>
+              )}
+              {day.available && day.relatedVerses?.length > 0 && <DetailSection title="Related verses">{day.relatedVerses.map((verse) => <p key={verse}>{verse}</p>)}</DetailSection>}
+              {day.available && localizedValue(day.practice, lang) && <DetailSection title="Today's practice">{localizedValue(day.practice, lang)}</DetailSection>}
+              {day.available && day.thingsToDo?.length > 0 && <DetailSection title="Things to do"><ul>{day.thingsToDo.map((item) => <li key={item}>{item}</li>)}</ul></DetailSection>}
+              {day.available && localizedValue(day.virtues, lang) && <DetailSection title="Virtue">{localizedValue(day.virtues, lang)}</DetailSection>}
+              {day.available && localizedValue(day.vices, lang) && <DetailSection title="Vice to surrender">{localizedValue(day.vices, lang)}</DetailSection>}
+              {day.available && localizedValue(day.prayerToRepeat, lang) && <DetailSection title="Prayer to repeat">{localizedValue(day.prayerToRepeat, lang)}</DetailSection>}
+              {day.available && localizedValue(day.dailyPrayer, lang) && <DetailSection title="Daily prayer">{localizedValue(day.dailyPrayer, lang)}</DetailSection>}
+            </div>
+          </section>
+        </div>
+      )}
     </main>
   );
+}
+
+function DetailSection({ title, children }) {
+  return <section className="detail-section"><h3>{title}</h3><div>{children}</div></section>;
 }
 
 export default App;

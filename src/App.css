@@ -283,6 +283,15 @@ p {
   color: var(--accent);
 }
 
+.page-tile.is-unavailable {
+  border-style: dashed;
+  opacity: 0.7;
+}
+
+.page-tile.is-unavailable:hover {
+  opacity: 1;
+}
+
 .tile-number {
   font-size: 0.85rem;
   font-weight: 700;
@@ -393,16 +402,61 @@ p {
 }
 
 /* Detail Panel (Sticky Sidebar) */
-.detail-panel {
-  position: sticky;
-  top: var(--spacing-lg);
-  align-self: start;
-  min-height: 500px;
-  padding: var(--spacing-xl);
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
-  color: white;
+.detail-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+  background: rgba(26, 58, 82, 0.72);
+}
+
+.detail-modal {
+  width: min(75vw, 980px);
+  height: min(75vh, 780px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bg-white);
   border-radius: 16px;
-  box-shadow: 0 10px 40px rgba(212, 165, 116, 0.25);
+  box-shadow: 0 24px 80px rgba(18, 39, 55, 0.35);
+}
+
+.detail-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  padding: var(--spacing-xl) var(--spacing-xl) var(--spacing-md);
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+}
+
+.detail-modal-header h2 {
+  max-width: 760px;
+  margin: 0;
+  color: white;
+}
+
+.modal-close {
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: 0 0 auto;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 50%;
+  background: transparent;
+  color: white;
+  font-size: 1.75rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.modal-close:hover { background: rgba(255, 255, 255, 0.15); }
+
+.detail-modal-scroll {
+  overflow-y: auto;
+  padding: var(--spacing-xl);
+  color: var(--text-dark);
 }
 
 .detail-topline {
@@ -425,47 +479,18 @@ p {
   opacity: 0.9;
 }
 
-.detail-panel h2 {
-  max-width: 100%;
-  margin: 0 0 var(--spacing-md);
-  font-weight: 800;
-  font-size: 2rem;
-  color: white;
-  line-height: 1.2;
-}
-
 .scripture {
-  color: rgba(255, 255, 255, 0.85);
   font-size: 0.95rem;
   font-style: italic;
   margin-bottom: var(--spacing-md);
 }
 
-.detail-copy {
-  max-width: 100%;
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 0.95rem;
-  line-height: 1.7;
-  margin-bottom: var(--spacing-lg);
-}
-
-.detail-footer {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-sm);
-  margin-top: var(--spacing-lg);
-  padding-top: var(--spacing-md);
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.85);
-}
-
-.status-dot {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-xs);
-}
+.detail-modal .detail-number { margin-top: 0; color: var(--accent-dark); }
+.detail-modal .scripture { color: var(--primary); }
+.detail-section { margin-top: var(--spacing-lg); padding-top: var(--spacing-md); border-top: 1px solid var(--border); }
+.detail-section h3 { margin-bottom: var(--spacing-xs); color: var(--primary-dark); font-size: 1.2rem; }
+.detail-section p, .detail-section li { color: var(--text-light); }
+.detail-section ul { padding-left: 1.25rem; }
 
 /* Scrollbar Styling */
 .full-text-panel::-webkit-scrollbar {
@@ -490,11 +515,6 @@ p {
 @media (max-width: 1024px) {
   .content-grid {
     grid-template-columns: 1fr;
-  }
-  
-  .detail-panel {
-    position: relative;
-    top: auto;
   }
   
   .tile-grid {
@@ -559,11 +579,6 @@ p {
     font-size: 0.85rem;
   }
   
-  .detail-panel {
-    padding: var(--spacing-lg);
-    min-height: auto;
-  }
-  
   .detail-number {
     font-size: 3rem;
   }
@@ -584,6 +599,20 @@ p {
   
   .full-text-panel {
     max-height: 250px;
+  }
+
+  .detail-modal-backdrop {
+    padding: var(--spacing-sm);
+  }
+
+  .detail-modal {
+    width: 100%;
+    height: 90vh;
+  }
+
+  .detail-modal-header,
+  .detail-modal-scroll {
+    padding: var(--spacing-lg);
   }
 }
 
@@ -617,6 +646,15 @@ p {
   
   .page-tile {
     min-height: 100px;
+  }
+
+  .detail-modal {
+    height: 94vh;
+  }
+
+  .detail-modal-header,
+  .detail-modal-scroll {
+    padding: var(--spacing-md);
   }
   
   .tile-title {
