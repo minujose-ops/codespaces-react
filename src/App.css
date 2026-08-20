@@ -174,12 +174,14 @@ p {
 /* Content Grid */
 .content-grid {
   display: grid;
-  grid-template-columns: 1fr 380px;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--spacing-xl);
   padding-top: var(--spacing-lg);
 }
 
 .tile-section {
+  width: 100%;
+  min-width: 0;
   background: rgba(255, 253, 249, 0.92);
   border-radius: 16px;
   padding: var(--spacing-xl);
