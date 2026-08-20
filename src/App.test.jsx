@@ -1,5 +1,5 @@
 import { beforeEach, expect, test, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import App from './App';
 
 const testData = {
@@ -21,8 +21,8 @@ beforeEach(() => {
 
 test('renders the page atlas with 40 tiles', async () => {
   render(<App />);
-  expect(await screen.findByRole('heading', { name: /eucharistic deliverance prayer/i })).toBeDefined();
-  expect(screen.getAllByRole('button')).toHaveLength(40);
+  expect(await screen.findByRole('heading', { level: 1, name: /eucharistic deliverance prayer/i })).toBeDefined();
+  expect(within(screen.getByLabelText('Page index')).getAllByRole('button')).toHaveLength(40);
 });
 
 test('shows the selected page information when a tile is clicked', async () => {

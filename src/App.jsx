@@ -255,7 +255,7 @@ function App() {
   const dayTileTitle = (item) => {
     if (item.day === 1 && lang === 'en') return 'Day 1: The Cosmic Temple';
     if (item.day === 1 && lang === 'ml') return item.theme && item.theme.ml ? item.theme.ml : 'Day 1: The Cosmic Temple';
-    return (item.theme && item.theme[lang]) || item.title || '';
+    return localizedValue(item.theme || item.title, lang) || 'Content coming soon';
   };
 
   const indexHeading = lang === 'en' ? '40 Days · Eucharistic Deliverance Prayer' : 'വിശുദ്ധ കുർബാനയോടൊപ്പം 40 ദിനങ്ങൾ';
